@@ -24,6 +24,18 @@ void viewClass(Summer23 classes[], int NumStudents);
 //Adds a student to a class
 void addStudent(int* StudentsN, int* StudentsS, COP3014 nClass[], Summer23 sClass[]);
 
+//Viewing Menu
+void viewerMenu();
+
+//Adding Menu
+void addingMenu();
+
+//Class Maker Menus
+void classMaker();
+
+//student finder menu
+void finder();
+
 int main() {
 //I've put a limit at 75 students per class
     //the two classes have their own arrays
@@ -39,16 +51,16 @@ int main() {
         //the slection form user input is used in the switch case to path to the correct chosen action
         MainMenu(&Selection);
         switch (Selection) {
-            case 1: //view COP
+            case 1: //view students or class averages
                 viewClass(normalClass, normalStudents);
                 break;
-            case 2: //view Sum
+            case 2: //add new student(s)
                 viewClass(summerClass, summerStudents);
                 break;
-            case 3: //Add Student
+            case 3: //create new class section
                 addStudent(&normalStudents, &summerStudents, normalClass, summerClass);
                 break;
-            case 4: //add example data
+            case 4: //student find
                 demonstration(summerClass, normalClass, &summerStudents, &normalStudents);
                 break;
             default:
@@ -115,10 +127,11 @@ void MainMenu(int* selection) {
     //display choices
     cout << "\n-----Main Manu-----\n";
     cout << "\n what can we help you with today?";
-    cout << "\n1: view COP3014 section";
-    cout << "\n2: view Summer23 section";
-    cout << "\n3: input new student";
-    cout << "\n4: add the example data";
+    cout << "\n1: view students/class averages";
+    cout << "\n2: add new student";
+    cout << "\n3: create new class section";
+    cout << "\n4: Student Find";
+    cout << "\n5: Add Demonstration Data";
     cout << "\n0 or less: exit program\n";
     //ensure choices are valid
     do {
@@ -131,12 +144,12 @@ void MainMenu(int* selection) {
             cin >> *selection;
         }
         //error message
-        if (*selection > 5) {
+        if (*selection > 6) {
             cout << "\nInvalid input, pleas try again\n";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-    } while (*selection > 5);
+    } while (*selection > 6);
 }
 
 //views all the students in a COP3014 Class
