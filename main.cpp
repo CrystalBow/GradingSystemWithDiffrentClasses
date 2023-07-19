@@ -4,6 +4,8 @@
 
 #include "Summer23.h"
 
+const int MAXCLASSSIZE = 76;
+const int MAXNUMBEROFSECTIONS = 7;
 using namespace std;
 
 //shows and adds the example data from the instructions
@@ -25,24 +27,28 @@ void viewClass(Summer23 classes[], int NumStudents);
 void addStudent(int* StudentsN, int* StudentsS, COP3014 nClass[], Summer23 sClass[]);
 
 //Viewing Menu
-void viewerMenu();
+void viewerMenu(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]);
+
 
 //Adding Menu
-void addingMenu();
+void addingMenu(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]);
 
 //Class Maker Menus
-void classMaker();
+int classMaker(Summer23 SumStu[], COP3014 NormStu[], int* NumOfSections, int classSizes[]);
 
-//student finder menu
-void finder();
+//Student Finder Menu
+void finder(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]);
+
+//Student and Class Section Removal
+void Removal(Summer23 SumStu[], COP3014 NormStu[], int* NumOfSections, int classSizes[]);
 
 int main() {
 //I've put a limit at 75 students per class
     //the two classes have their own arrays
-    COP3014 normalClass[75];
-    Summer23 summerClass[75];
+    COP3014 normalClass[MAXNUMBEROFSECTIONS][MAXCLASSSIZE];
+    Summer23 summerClass[MAXNUMBEROFSECTIONS][MAXCLASSSIZE];
     //Are used to know how many students are actually in the arrays
-    int summerStudents = 0, normalStudents = 0;
+    int summerStudents[MAXNUMBEROFSECTIONS], normalStudents[MAXNUMBEROFSECTIONS];
     //handles selection process in the main menu
     int Selection;
     welcome();
@@ -52,16 +58,16 @@ int main() {
         MainMenu(&Selection);
         switch (Selection) {
             case 1: //view students or class averages
-                viewClass(normalClass, normalStudents);
                 break;
             case 2: //add new student(s)
-                viewClass(summerClass, summerStudents);
                 break;
             case 3: //create new class section
-                addStudent(&normalStudents, &summerStudents, normalClass, summerClass);
                 break;
             case 4: //student find
-                demonstration(summerClass, normalClass, &summerStudents, &normalStudents);
+                break;
+            case 5: //Removal
+                break;
+            case 6: //Demonstration
                 break;
             default:
                 //the user has chosen to leave the program by enter a 0 or less
@@ -131,7 +137,8 @@ void MainMenu(int* selection) {
     cout << "\n2: add new student";
     cout << "\n3: create new class section";
     cout << "\n4: Student Find";
-    cout << "\n5: Add Demonstration Data";
+    cout << "\n5: Remove Student or Section";
+    cout << "\n6: Add Demonstration Data";
     cout << "\n0 or less: exit program\n";
     //ensure choices are valid
     do {
@@ -144,12 +151,12 @@ void MainMenu(int* selection) {
             cin >> *selection;
         }
         //error message
-        if (*selection > 6) {
+        if (*selection > 7) {
             cout << "\nInvalid input, pleas try again\n";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-    } while (*selection > 6);
+    } while (*selection > 7);
 }
 
 //views all the students in a COP3014 Class
@@ -212,4 +219,26 @@ void addStudent(int *StudentsN, int *StudentsS, COP3014 nClass[], Summer23 sClas
         //message for when to many students are in one class
         cout << "Max number of students in selected class has already been reached";
     }
+
+
+}
+
+void viewerMenu(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]) {
+
+}
+
+void addingMenu(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]) {
+
+}
+
+int classMaker(Summer23 SumStu[], COP3014 NormStu[], int *NumOfSections, int classSizes[]) {
+    return 0;
+}
+
+void finder(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]) {
+
+}
+
+void Removal(Summer23 *SumStu, COP3014 *NormStu, int *NumOfSections, int *classSizes) {
+
 }
