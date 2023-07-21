@@ -13,6 +13,7 @@ Summer23::Summer23(double *quizGrades, double midtermGrade, double finalGrade, d
                                                                                                            bonus(bonus) {}
 //Constructor
 Summer23::Summer23() {
+    COP3014();
     bonus = 0.00;
     isBonusON = false;
 }

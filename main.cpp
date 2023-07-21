@@ -1,8 +1,14 @@
+#ifndef COP3014_H
+#define COP3014_H
 #include <iostream>
 #include <string>
 #include <limits>
-
+#include "COP3014.h"
 #include "Summer23.h"
+#endif
+
+
+
 
 const int MAXCLASSSIZE = 76;
 const int MAXNUMBEROFSECTIONS = 7;
@@ -27,20 +33,20 @@ void viewClass(Summer23 classes[], int NumStudents);
 void addStudent(int* StudentsN, int* StudentsS, COP3014 nClass[], Summer23 sClass[]);
 
 //Viewing Menu
-void viewerMenu(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]);
+void viewerMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]);
 
 
 //Adding Menu
-void addingMenu(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]);
+void addingMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]);
 
 //Class Maker Menus
-int classMaker(Summer23 SumStu[], COP3014 NormStu[], int* NumOfSections, int classSizes[]);
+void classMaker(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]);
 
 //Student Finder Menu
-void finder(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]);
+void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]);
 
 //Student and Class Section Removal
-void Removal(Summer23 SumStu[], COP3014 NormStu[], int* NumOfSections, int classSizes[]);
+void Removal(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]);
 
 int main() {
 //I've put a limit at 75 students per class
@@ -49,6 +55,8 @@ int main() {
     Summer23 summerClass[MAXNUMBEROFSECTIONS][MAXCLASSSIZE];
     //Are used to know how many students are actually in the arrays
     int summerStudents[MAXNUMBEROFSECTIONS], normalStudents[MAXNUMBEROFSECTIONS];
+    //Are used to know how many class sections there are already
+    int summerSections = 0, normalSections = 0;
     //handles selection process in the main menu
     int Selection;
     welcome();
@@ -62,6 +70,7 @@ int main() {
             case 2: //add new student(s)
                 break;
             case 3: //create new class section
+                classMaker(summerClass, normalClass, &summerSections, &normalSections, summerStudents, normalStudents);
                 break;
             case 4: //student find
                 break;
@@ -223,22 +232,96 @@ void addStudent(int *StudentsN, int *StudentsS, COP3014 nClass[], Summer23 sClas
 
 }
 
-void viewerMenu(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]) {
+void viewerMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]) {
 
 }
 
-void addingMenu(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]) {
+void addingMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]) {
 
 }
 
-int classMaker(Summer23 SumStu[], COP3014 NormStu[], int *NumOfSections, int classSizes[]) {
-    return 0;
+void classMaker(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]) {
+    int select;
+    cout << "what type of class will be added?";
+    cout << "\n1: COP3014 \t2: Summer23\n";
+    do  {
+        cin >> select;
+        //ensures the selection is a number
+        while (cin.fail()) {
+            cout << "\nInvalid Input, please try again\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin >> select;
+        }
+        //error message
+        if ((select != 1) && (select != 2)) {
+            cout << "\nInvalid input, pleas try again\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    } while ((select != 1) && (select != 2));
+    if (select = 1) {
+        if (*NumOfSectionsNorm < MAXNUMBEROFSECTIONS) {
+            cout << "\nHow many students are you adding? (max 75)\n";
+            do  {
+                cin >> select;
+                //ensures the selection is a number
+                while (cin.fail()) {
+                    cout << "\nInvalid Input, please try again\n";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cin >> select;
+                }
+                //error message
+                if ((select < 0) || (select > 75)) {
+                    cout << "\nInvalid input, the max is 75, pleas try again\n";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            } while ((select < 0) || (select > 75));
+            for (int i = 1; i < select; i++) {
+                cout << "\n---Student #" << i << "---\n";
+                NormStu[*NumOfSectionsNorm][i].setAllInput();
+            }
+            *NumOfSectionsNorm = *NumOfSectionsNorm + 1;
+        } else {
+            cout << "\nYou already have to many sections don't overwork yourself!\n";
+        }
+    } else  {
+        if (*NumOfSectionsSum < MAXNUMBEROFSECTIONS) {
+            cout << "\nHow many students are you adding? (max 75)\n";
+            do  {
+                cin >> select;
+                //ensures the selection is a number
+                while (cin.fail()) {
+                    cout << "\nInvalid Input, please try again\n";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cin >> select;
+                }
+                //error message
+                if ((select < 0) || (select > 75)) {
+                    cout << "\nInvalid input, the max is 75, pleas try again\n";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            } while ((select < 0) || (select > 75));
+            for (int i = 1; i < select; i++) {
+                cout << "\n---Student #" << i << "---\n";
+                SumStu[*NumOfSectionsNorm][i].setAllInput();
+            }
+            *NumOfSectionsSum = *NumOfSectionsSum + 1;
+        } else {
+            cout << "\nYou already have to many sections don't overwork yourself!\n";
+        }
+    }
+
 }
 
-void finder(Summer23 SumStu[], COP3014 NormStu[], int NumOfSections, int classSizes[]) {
+void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]) {
 
 }
 
-void Removal(Summer23 *SumStu, COP3014 *NormStu, int *NumOfSections, int *classSizes) {
+void Removal(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]) {
 
 }

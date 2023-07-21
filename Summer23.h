@@ -1,11 +1,13 @@
 //
 // Created by Yimer on 7/13/2023.
 //
+#ifndef COP3014_H
+#define COP3014_H
 #include <iostream>
 #include <string>
 #include <limits>
 #include "COP3014.h"
-
+#endif
 using namespace std;
 
 //child class of COP3014. Holds information of a student in the summer 2023 class.
