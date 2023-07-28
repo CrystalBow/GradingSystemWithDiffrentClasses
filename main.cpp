@@ -16,7 +16,7 @@ const int MAXNUMBEROFSECTIONS = 7;
 using namespace std;
 
 //shows and adds the example data from the instructions
-void demonstration(Summer23 summerClass[], COP3014 normClass[], int* summerNum, int* normNum);
+void demonstration(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]);
 
 //welcome message
 void welcome();
@@ -92,8 +92,10 @@ int main() {
             case 4: //student find
                 break;
             case 5: //Removal
+                removalMenu(summerClass, normalClass, &summerSections, &normalSections,summerStudents, normalStudents);
                 break;
             case 6: //Demonstration
+                demonstration(summerClass, normalClass, &summerSections, &normalSections, summerStudents, normalStudents);
                 break;
             default:
                 //the user has chosen to leave the program by enter a 0 or less
@@ -105,7 +107,7 @@ int main() {
 }
 
 //shows and adds the example data from the instructions
-void demonstration(Summer23 summerClass[], COP3014 normClass[], int* summerNum, int* normNum) {
+void demonstration(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]) {
     //initialization of all data from the instructions using overloaded constructors
     double frankQuiz[] = {20, 20, 10}, ginaQuiz[] ={20, 20, 20};
     COP3014 frankBase(frankQuiz , 0, 90, 100, 'A', "Frank", "Fabulous", "Z12345678");
@@ -134,17 +136,25 @@ void demonstration(Summer23 summerClass[], COP3014 normClass[], int* summerNum, 
     ginaDerived.displayData();
     cout << "\n";
     //adding the data to the classes if space permits
-    if (*normNum < 73) {
-        normClass[*normNum] = frankBase;
-        *normNum += 1;
-        normClass[*normNum] = ginaBase;
-        *normNum += 1;
+    if (*NumOfSectionsNorm < MAXNUMBEROFSECTIONS) {
+        NormStu[*NumOfSectionsNorm][1] = frankBase;
+        NormStu[*NumOfSectionsNorm][2] = ginaBase;
+        normSize[*NumOfSectionsNorm] = 2;
+        NormStu[*NumOfSectionsNorm][0].setFirstName("NormalSection" + to_string(*NumOfSectionsNorm));
+        NormStu[*NumOfSectionsNorm][0].setLastName("\nSize: " + to_string(2) + "\n");
+        NormStu[*NumOfSectionsNorm][0].setZNumber("COP3014-" + to_string(*NumOfSectionsNorm));
+        averageCalc(NormStu[*NumOfSectionsNorm], normSize[*NumOfSectionsNorm]);
+        *NumOfSectionsNorm = *NumOfSectionsNorm + 1;
     }
-    if (*summerNum < 73) {
-        summerClass[*summerNum] = frankDerived;
-        *summerNum += 1;
-        summerClass[*summerNum] = ginaDerived;
-        *summerNum += 1;
+    if (*NumOfSectionsSum < MAXNUMBEROFSECTIONS) {
+        SumStu[*NumOfSectionsSum][1] = frankDerived;
+        SumStu[*NumOfSectionsSum][2] = ginaDerived;
+        sumSize[*NumOfSectionsSum] = 2;
+        SumStu[*NumOfSectionsSum][0].setFirstName("SummerSection" + to_string(*NumOfSectionsSum));
+        SumStu[*NumOfSectionsSum][0].setLastName("\nSize: " + to_string(2) + "\n");
+        SumStu[*NumOfSectionsSum][0].setZNumber("Summer23-" + to_string(*NumOfSectionsSum));
+        averageCalc(SumStu[*NumOfSectionsSum], normSize[*NumOfSectionsSum]);
+        *NumOfSectionsSum = *NumOfSectionsSum + 1;
     }
 }
 
@@ -464,7 +474,7 @@ void classMaker(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
                 }
             } while ((select < 0) || (select > 75));
             NormStu[*NumOfSectionsNorm][0].setFirstName("NormalSection" + to_string(*NumOfSectionsNorm));
-            NormStu[*NumOfSectionsNorm][0].setLastName("Size: " + to_string(select));
+            NormStu[*NumOfSectionsNorm][0].setLastName("\nSize: " + to_string(select) + "\n");
             NormStu[*NumOfSectionsNorm][0].setZNumber("COP3014-" + to_string(*NumOfSectionsNorm));
             for (int i = 1; i <= select; i++) {
                 cout << "\n---Student #" << i << "---\n";
@@ -496,7 +506,7 @@ void classMaker(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
                 }
             } while ((select < 0) || (select > 75));
             SumStu[*NumOfSectionsSum][0].setFirstName("SummerSection" + to_string(*NumOfSectionsSum));
-            SumStu[*NumOfSectionsNorm][0].setLastName("Size: " + to_string(select));
+            SumStu[*NumOfSectionsNorm][0].setLastName("\nSize: " + to_string(select) + "\n");
             SumStu[*NumOfSectionsNorm][0].setZNumber("Summer23-" + to_string(*NumOfSectionsSum));
             for (int i = 1; i <= select; i++) {
                 cout << "\n---Student #" << i << "---\n";
@@ -647,7 +657,7 @@ void averageCalc(Summer23 students[], int NumStudents) {
 
 void removeClass(COP3014 students[][MAXCLASSSIZE], int NumOfStudents[], int *NumOfClasses) {
     int select;
-    cout << "Which class will you be removing?";
+    cout << "Which class will you be removing?\n";
     for (int i = 0; i < *NumOfClasses; i++) {
         cout << students[i][0].getZNumber();
         cout << "\n";
@@ -688,7 +698,7 @@ void removeClass(COP3014 students[][MAXCLASSSIZE], int NumOfStudents[], int *Num
 
 void removeClass(Summer23 students[][MAXCLASSSIZE], int NumOfStudents[], int *NumOfClasses) {
     int select;
-    cout << "Which class will you be removing?";
+    cout << "Which class will you be removing?\n";
     for (int i = 0; i < *NumOfClasses; i++) {
         cout << students[i][0].getZNumber();
         cout << "\n";
@@ -729,8 +739,8 @@ void removeClass(Summer23 students[][MAXCLASSSIZE], int NumOfStudents[], int *Nu
 
 void removeStudents(COP3014 students[], int *NumOfStudents) {
     int select;
-    cout << "Which Student would you like to remove? (please use the number order they are in)";
-    viewClass(students, *NumOfStudents);
+    cout << "Which Student would you like to remove? (please use the number order they are in)\n";
+    viewClass(students, *NumOfStudents + 1);
     do {
         cin >> select;
         //ensures the selection is a number
@@ -756,8 +766,8 @@ void removeStudents(COP3014 students[], int *NumOfStudents) {
 
 void removeStudents(Summer23 students[], int *NumOfStudents) {
     int select;
-    cout << "Which Student would you like to remove? (please use the number order they are in)";
-    viewClass(students, *NumOfStudents);
+    cout << "Which Student would you like to remove? (please use the number order they are in)\n";
+    viewClass(students, *NumOfStudents + 1);
     do {
         cin >> select;
         //ensures the selection is a number

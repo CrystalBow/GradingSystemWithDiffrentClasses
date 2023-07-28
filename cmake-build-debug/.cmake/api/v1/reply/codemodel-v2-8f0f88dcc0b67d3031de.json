@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "GradingSystemWithDiffrentClasses::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-GradingSystemWithDiffrentClasses-Debug-2f3a2c778fff90a8adef.json",
+					"jsonFile" : "target-GradingSystemWithDiffrentClasses-Debug-a494de046c55f530c59f.json",
 					"name" : "GradingSystemWithDiffrentClasses",
 					"projectIndex" : 0
 				}
@@ -55,6 +55,6 @@
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 5
 	}
 }
