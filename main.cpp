@@ -688,9 +688,13 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
         } while (select > MatchCount || select <= 0);
+        //moves the selected student to target, so we can reuse select
         target = select - 1;
         if (IsNormal[target]) {
+            //COP3014
+            //Display selected student
             NormStu[classNumber[target]][studentNumLocation[target]].displayData();
+            //prompt and receive input for next option
             cout << "\nWhat would you like to do with them? (0 for nothing)\n";
             cout << "\n\t1: Change Grades\n\t2: Remove Student\n\t";
             do {
@@ -710,25 +714,40 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
                 }
             } while (select > 2 || select < 0);
             if (select == 1) {
+                //edit grades
                 editGradesMenu(&NormStu[classNumber[target]][studentNumLocation[target]]);
             } else if (select == 2) {
+                //remove student
                 if (normSize[classNumber[target]] >= MAXCLASSSIZE - 1) {
+                    //when class is full
                     COP3014 Empty;
+                    //shift everything over. Overwriting the student being removed.
                     for (int i = target; i <= normSize[classNumber[target]] - 1; i++) {
                         NormStu[classNumber[target]][i] = NormStu[classNumber[target]][i+1];
                     }
+                    //But for the last one we set it equal to the default constructor
                     NormStu[classNumber[target]][MAXCLASSSIZE - 1] = Empty;
+                    //update class size
                     normSize[classNumber[target]] = normSize[classNumber[target]] - 1;
                 } else {
+                    //when class isn't full
+                    //shift everything over. Overwriting the student being removed.
                     for (int i = target; i <= normSize[classNumber[target]]; i++) {
                         NormStu[classNumber[target]][i] = NormStu[classNumber[target]][i+1];
                     }
+                    //update class size
                     normSize[classNumber[target]] = normSize[classNumber[target]] - 1;
                 }
+                //update average size string
+                NormStu[classNumber[target]][0].setLastName("\nSize: " + to_string(normSize[classNumber[target]]) + "\n");
             }
+            //update average
             averageCalc(NormStu[classNumber[target]], normSize[classNumber[target]]);
         } else {
+            //Summer23
+            //Display selected student
             SumStu[classNumber[target]][studentNumLocation[target]].displayData();
+            //prompt and receive input for next option
             cout << "\nWhat would you like to do with them?";
             cout << "\n\t1: Change Grades\n\t2: Remove Student\n\t";
             do {
@@ -748,22 +767,33 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
                 }
             } while (select > 2 || select < 0);
             if (select == 1) {
+                //edit grades
                 editGradesMenu(&SumStu[classNumber[target]][studentNumLocation[target]]);
             } else if (select == 2) {
+                //remove student
                 if (sumSize[classNumber[target]] >= MAXCLASSSIZE - 1) {
+                    //when class is full
                     Summer23 Empty;
+                    //shift everything over. Overwriting the student being removed.
                     for (int i = target; i <= sumSize[classNumber[target]] - 1; i++) {
                         SumStu[classNumber[target]][i] = SumStu[classNumber[target]][i+1];
                     }
+                    //But for the last one we set it equal to the default constructor
                     SumStu[classNumber[target]][MAXCLASSSIZE - 1] = Empty;
+                    //update class size
                     sumSize[classNumber[target]] = sumSize[classNumber[target]] - 1;
                 } else {
+                    //when class isn't full
                     for (int i = target; i <= sumSize[classNumber[target]]; i++) {
                         SumStu[classNumber[target]][i] = SumStu[classNumber[target]][i+1];
                     }
+                    //update class size
                     sumSize[classNumber[target]] = sumSize[classNumber[target]] - 1;
                 }
+                //update average size string
+                SumStu[classNumber[target]][0].setLastName("\nSize: " + to_string(sumSize[classNumber[target]]) + "\n");
             }
+            //update average
             averageCalc(SumStu[classNumber[target]], sumSize[classNumber[target]]);
         }
 
@@ -772,7 +802,9 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
 
 //Student and Class Section Removal
 void removalMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]) {
+    //variable for receiving input
     int select;
+    //prompt for and receive input
     cout << "\n-----Removal Menu-----\n";
     cout << "\n\t0:Remove Normal Student\n\t1:Remove Summer Student\n\t2:Remove Normal Class\n\t3:Remove Summer Class\n";
     do {
@@ -792,7 +824,8 @@ void removalMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE
         }
     } while (select > 3 || select < 0);
     switch (select) {
-        case 0:
+        case 0: //Removing COP3014 student
+            //prompt for and receive input
             cout << "\nwhich section are they in? (please enter the last digit in name)\n";
             for (int i = 0; i < *NumOfSectionsNorm; i++) {
                 cout << NormStu[i][0].getZNumber();
@@ -814,9 +847,11 @@ void removalMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 }
             } while (select >= *NumOfSectionsNorm || select < 0);
+            //remove student
             removeStudents(NormStu[select], &normSize[select]);
             break;
-        case 1:
+        case 1: //Removing Summer23 Student
+            //prompt for and receive input
             cout << "\nwhich section are they in? (please enter the last digit in name)\n";
             for (int i = 0; i < *NumOfSectionsSum; i++) {
                 cout << SumStu[i][0].getZNumber();
@@ -838,12 +873,13 @@ void removalMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 }
             } while (select >= *NumOfSectionsSum || select < 0);
+            //remove student
             removeStudents(SumStu[select], &sumSize[select]);
             break;
-        case 2:
+        case 2://Remove COP3014 class
             removeClass(NormStu, normSize, NumOfSectionsNorm);
             break;
-        case 3:
+        case 3://Remove Summer23 class
             removeClass(SumStu, sumSize, NumOfSectionsSum);
             break;
     }
@@ -851,9 +887,11 @@ void removalMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE
 
 //calculates the average for a COP3014 class
 void averageCalc(COP3014 students[], int NumStudents) {
+    //variables to do the math in before sending them to the object
     double quiz[3] = {0, 0, 0};
     double midterm = 0;
     double final = 0;
+    //adding up all the values form all the students
     for (int i = 1; i <= NumStudents; i++) {
         quiz[0] = quiz[0] + students[i].getQuizGrades(1);
         quiz[1] = quiz[1] + students[i].getQuizGrades(2);
@@ -861,11 +899,13 @@ void averageCalc(COP3014 students[], int NumStudents) {
         midterm = midterm + students[i].getMidtermGrade();
         final = final + students[i].getFinalGrade();
     }
+    //dividing by number of students
     quiz[0] = quiz[0]/NumStudents;
     quiz[1] = quiz[1]/NumStudents;
     quiz[2] = quiz[2]/NumStudents;
     midterm = midterm/NumStudents;
     final = final/NumStudents;
+    //Sending it all to the average object
     students[0].setQuizGrades(quiz);
     students[0].setMidtermGrade(midterm);
     students[0].setFinalGrade(final);
@@ -875,10 +915,12 @@ void averageCalc(COP3014 students[], int NumStudents) {
 
 //Overload to calculate the average for a Summer23 class
 void averageCalc(Summer23 students[], int NumStudents) {
+    //variables to do the math in before sending them to the object
     double quiz[3] = {0, 0, 0};
     double midterm = 0;
     double final = 0;
     double bonus = 0;
+    //adding up all the values form all the students
     for (int i = 1; i <= NumStudents; i++) {
         quiz[0] = quiz[0] + students[i].getQuizGrades(1);
         quiz[1] = quiz[1] + students[i].getQuizGrades(2);
@@ -887,12 +929,14 @@ void averageCalc(Summer23 students[], int NumStudents) {
         final = final + students[i].getFinalGrade();
         bonus = bonus + students[i].getBonus();
     }
+    //dividing by number of students
     quiz[0] = quiz[0]/NumStudents;
     quiz[1] = quiz[1]/NumStudents;
     quiz[2] = quiz[2]/NumStudents;
     midterm = midterm/NumStudents;
     final = final/NumStudents;
     bonus = bonus/NumStudents;
+    //Sending it all to the average object
     students[0].setQuizGrades(quiz);
     students[0].setMidtermGrade(midterm);
     students[0].setFinalGrade(final);
@@ -905,7 +949,9 @@ void averageCalc(Summer23 students[], int NumStudents) {
 
 //Removes class from the system
 void removeClass(COP3014 students[][MAXCLASSSIZE], int NumOfStudents[], int *NumOfClasses) {
+    //variable for input receiving
     int select;
+    //prompt and receive input
     cout << "Which class will you be removing?\n";
     for (int i = 0; i < *NumOfClasses; i++) {
         cout << students[i][0].getZNumber();
@@ -926,23 +972,33 @@ void removeClass(COP3014 students[][MAXCLASSSIZE], int NumOfStudents[], int *Num
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-    } while (select > *NumOfClasses || select < 0);
+    } while (select >= *NumOfClasses || select < 0);
     if (*NumOfClasses == MAXCLASSSIZE) {
-        COP3014 Empty;
-        for (int i = 0; i < NumOfStudents[*NumOfClasses]; i++) {
-           students[NumOfStudents[*NumOfClasses]][i] = Empty;
-        }
-        NumOfStudents[*NumOfClasses] = 0;
-        *NumOfClasses = *NumOfClasses - 1;
-    } else {
-        for (int i = select; i < *NumOfClasses; i++) {
-            for (int j = 0; j <= NumOfStudents[i+1]; j++) {
+        //Remove class by shifting over all the other classes to overwrite the one being removed.
+        for (int i = select; i <= *NumOfClasses; i++) {
+            //moving students over
+            for (int j = 0; j < NumOfStudents[i+1]; j++) {
                 students[i][j] = students[i + 1][j];
             }
             NumOfStudents[i] = NumOfStudents[i+1];
         }
-        *NumOfClasses = *NumOfClasses - 1;
+        //clears out the old data
+        COP3014 Empty;
+        for (int i = 0; i < NumOfStudents[*NumOfClasses - 1]; i++) {
+            students[*NumOfClasses - 1][i] = Empty;
+        }
+    } else {
+        //Remove class by shifting over all the other classes to overwrite the one being removed
+        for (int i = select; i < *NumOfClasses; i++) {
+            //moving students over
+            for (int j = 0; j < NumOfStudents[i+1]; j++) {
+                students[i][j] = students[i + 1][j];
+            }
+            NumOfStudents[i] = NumOfStudents[i+1];
+        }
     }
+    //updates number of classes
+    *NumOfClasses = *NumOfClasses - 1;
 }
 
 //Overload for removing summer classes
@@ -970,21 +1026,31 @@ void removeClass(Summer23 students[][MAXCLASSSIZE], int NumOfStudents[], int *Nu
         }
     } while (select > *NumOfClasses || select < 0);
     if (*NumOfClasses == MAXCLASSSIZE) {
-        Summer23 Empty;
-        for (int i = 0; i < NumOfStudents[*NumOfClasses]; i++) {
-            students[NumOfStudents[*NumOfClasses]][i] = Empty;
-        }
-        NumOfStudents[*NumOfClasses] = 0;
-        *NumOfClasses = *NumOfClasses - 1;
-    } else {
-        for (int i = select; i < *NumOfClasses; i++) {
-            for (int j = 0; j <= NumOfStudents[i+1]; j++) {
+        //Remove class by shifting over all the other classes to overwrite the one being removed.
+        for (int i = select; i <= *NumOfClasses; i++) {
+            //moving students over
+            for (int j = 0; j < NumOfStudents[i+1]; j++) {
                 students[i][j] = students[i + 1][j];
             }
             NumOfStudents[i] = NumOfStudents[i+1];
         }
-        *NumOfClasses = *NumOfClasses - 1;
+        //clears out the old data
+        Summer23 Empty;
+        for (int i = 0; i < NumOfStudents[*NumOfClasses - 1]; i++) {
+            students[*NumOfClasses - 1][i] = Empty;
+        }
+    } else {
+        //Remove class by shifting over all the other classes to overwrite the one being removed
+        for (int i = select; i < *NumOfClasses; i++) {
+            //moving students over
+            for (int j = 0; j < NumOfStudents[i+1]; j++) {
+                students[i][j] = students[i + 1][j];
+            }
+            NumOfStudents[i] = NumOfStudents[i+1];
+        }
     }
+    //updates number of classes
+    *NumOfClasses = *NumOfClasses - 1;
 }
 
 //Menus for removing students
