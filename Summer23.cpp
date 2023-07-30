@@ -6,6 +6,7 @@
 #include <limits>
 #include "Summer23.h"
 
+using namespace studentTypesYimerDuggan;
 //overloaded Constructor
 Summer23::Summer23(double *quizGrades, double midtermGrade, double finalGrade, double totalGrade, char finalLetterGrade,
                    const string &firstName, const string &lastName, const string &zNumber, double bonus) : COP3014(

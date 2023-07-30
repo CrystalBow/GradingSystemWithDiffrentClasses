@@ -6,7 +6,7 @@
 #include <limits>
 #include "COP3014.h"
 using namespace std;
-
+using namespace studentTypesYimerDuggan;
 //simple getters and setters
 double COP3014::getMidtermGrade() {
     return midtermGrade;
