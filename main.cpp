@@ -1,3 +1,7 @@
+// Made by Yimer C. Duggan
+// 8/2/2023
+// Goal: to create a grading system that can hold more than one class of students, and to use separate files to make my work more manageable.
+// Side goal: flex on the haters (;
 #ifndef COP3014_H
 #define COP3014_H
 #include "COP3014.h"
@@ -71,16 +75,16 @@ void editGradesMenu(Summer23* Student);
 //Overload for changing grades of normal students
 void editGradesMenu(COP3014* Student);
 
-//Updates Class Averages
-void AverageUpdater(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]);
-
+//Fetches a integer form the user
+void fetchIntegerInput(int* StoringLocation);
 
 int main() {
-//I've put a limit at 75 students per class
-    //the two classes have their own arrays
+    /* The two types of classes have their own 2D array. Where each column (first number) is a separate class section, and the 0th row (2nd number) holds information on the class average.
+     * Each class can only have 75 students and a teacher is limited to 7 class sections of the same type.
+    */
     COP3014 normalClass[MAXNUMBEROFSECTIONS][MAXCLASSSIZE];
     Summer23 summerClass[MAXNUMBEROFSECTIONS][MAXCLASSSIZE];
-    //Are used to know how many students are actually in the arrays
+    //Are used to know how many students are actually in each class
     int summerStudents[MAXNUMBEROFSECTIONS], normalStudents[MAXNUMBEROFSECTIONS];
     //Are used to know how many class sections there are already
     int summerSections = 0, normalSections = 0;
@@ -191,14 +195,7 @@ void MainMenu(int* selection) {
     cout << "\n0 or less: exit program\n";
     //ensure choices are valid
     do {
-        cin >> *selection;
-        //ensure input is a number
-        while (cin.fail()) {
-            cout << "\nInvalid input, pleas try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> *selection;
-        }
+        fetchIntegerInput(selection);
         //error message
         if (*selection > 7) {
             cout << "\nInvalid input, pleas try again\n";
@@ -239,14 +236,7 @@ void viewerMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
     cout << "\n1: COP3014 \t2: Summer23\n";
     //ensures valid option
     do  {
-        cin >> select;
-        //ensures the selection is a number
-        while (cin.fail()) {
-            cout << "\nInvalid Input, please try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> select;
-        }
+        fetchIntegerInput(&select);
         //error message
         if ((select != 1) && (select != 2)) {
             cout << "\nInvalid input, pleas try again\n";
@@ -265,14 +255,7 @@ void viewerMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
         }
         //Receive input
         do {
-            cin >> select;
-            //ensures the selection is a number
-            while (cin.fail()) {
-                cout << "\nInvalid Input, please try again\n";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin >> select;
-            }
+            fetchIntegerInput(&select);
             //error message
             if (select > *NumOfSectionsNorm) {
                 cout << "\nInvalid input, pleas try again\n";
@@ -302,14 +285,7 @@ void viewerMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
         }
         //Receive input
         do {
-            cin >> select;
-            //ensures the selection is a number
-            while (cin.fail()) {
-                cout << "\nInvalid Input, please try again\n";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin >> select;
-            }
+            fetchIntegerInput(&select);
             //error message
             if (select > *NumOfSectionsSum) {
                 cout << "\nInvalid input, pleas try again\n";
@@ -345,14 +321,7 @@ void addingMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
     cout << "\n1: COP3014 \t2: Summer23\n";
     //receive input
     do {
-        cin >> select;
-        //ensures the selection is a number
-        while (cin.fail()) {
-            cout << "\nInvalid Input, please try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> select;
-        }
+        fetchIntegerInput(&select);
         //error message
         if ((select != 1) && (select != 2)) {
             cout << "\nInvalid input, pleas try again\n";
@@ -371,14 +340,7 @@ void addingMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
         }
         //receive input
         do {
-            cin >> select;
-            //ensures the selection is a number
-            while (cin.fail()) {
-                cout << "\nInvalid Input, please try again\n";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin >> select;
-            }
+            fetchIntegerInput(&select);
             //error message
             if (select > *NumOfSectionsNorm || select < 0) {
                 cout << "\nInvalid input, pleas try again\n";
@@ -407,14 +369,7 @@ void addingMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
             cout << "\n";
         }
         do {
-            cin >> select;
-            //ensures the selection is a number
-            while (cin.fail()) {
-                cout << "\nInvalid Input, please try again\n";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin >> select;
-            }
+            fetchIntegerInput(&select);
             //error message
             if (select > *NumOfSectionsSum || select < 0) {
                 cout << "\nInvalid input, pleas try again\n";
@@ -449,14 +404,7 @@ void classMaker(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
     cout << "\n1: COP3014 \t2: Summer23\n";
     //receive input
     do  {
-        cin >> select;
-        //ensures the selection is a number
-        while (cin.fail()) {
-            cout << "\nInvalid Input, please try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> select;
-        }
+        fetchIntegerInput(&select);
         //error message
         if ((select != 1) && (select != 2)) {
             cout << "\nInvalid input, pleas try again\n";
@@ -470,14 +418,7 @@ void classMaker(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
             //^Made sure there is still room in array^
             cout << "\nHow many students are you adding? (max 75)\n";
             do  {
-                cin >> select;
-                //ensures the selection is a number
-                while (cin.fail()) {
-                    cout << "\nInvalid Input, please try again\n";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cin >> select;
-                }
+                fetchIntegerInput(&select);
                 //error message
                 if ((select < 0) || (select > 75)) {
                     cout << "\nInvalid input, the max is 75, please try again\n";
@@ -501,7 +442,7 @@ void classMaker(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
             normSize[*NumOfSectionsNorm] = select;
             *NumOfSectionsNorm = *NumOfSectionsNorm + 1;
             //The NumOfSectionsSum and NumOfSectionsNorm need to adapted for index. We subtract by one to achieve that.
-            averageCalc(NormStu[*NumOfSectionsSum - 1], normSize[*NumOfSectionsSum - 1]);
+            averageCalc(NormStu[*NumOfSectionsNorm - 1], normSize[*NumOfSectionsNorm - 1]);
         } else {
             //message if you have to many classes
             cout << "\nYou already have to many sections don't overwork yourself!\n";
@@ -513,14 +454,7 @@ void classMaker(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE]
             //prompt and receive input
             cout << "\nHow many students are you adding? (max 75)\n";
             do  {
-                cin >> select;
-                //ensures the selection is a number
-                while (cin.fail()) {
-                    cout << "\nInvalid Input, please try again\n";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cin >> select;
-                }
+                fetchIntegerInput(&select);
                 //error message
                 if ((select < 0) || (select > 75)) {
                     cout << "\nInvalid input, the max is 75, please try again\n";
@@ -673,14 +607,7 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
         //prompt and receive input
         cout << "\nwhich student would you like to inspect? (enter the match number)";
         do {
-            cin >> select;
-            //ensure input is a number
-            while (cin.fail()) {
-                cout << "\nInvalid input, please try again\n";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin >> select;
-            }
+            fetchIntegerInput(&select);
             //error message
             if (select > MatchCount || select <= 0) {
                 cout << "\nInvalid input, please try again\n";
@@ -698,14 +625,7 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
             cout << "\nWhat would you like to do with them? (0 for nothing)\n";
             cout << "\n\t1: Change Grades\n\t2: Remove Student\n\t";
             do {
-                cin >> select;
-                //ensure input is a number
-                while (cin.fail()) {
-                    cout << "\nInvalid input, please try again\n";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cin >> select;
-                }
+                fetchIntegerInput(&select);
                 //error message
                 if (select > 2 || select < 0) {
                     cout << "\nInvalid input, please try again\n";
@@ -722,7 +642,7 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
                     //when class is full
                     COP3014 Empty;
                     //shift everything over. Overwriting the student being removed.
-                    for (int i = target; i <= normSize[classNumber[target]] - 1; i++) {
+                    for (int i = target + 1; i <= normSize[classNumber[target]] - 1; i++) {
                         NormStu[classNumber[target]][i] = NormStu[classNumber[target]][i+1];
                     }
                     //But for the last one we set it equal to the default constructor
@@ -732,7 +652,7 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
                 } else {
                     //when class isn't full
                     //shift everything over. Overwriting the student being removed.
-                    for (int i = target; i <= normSize[classNumber[target]]; i++) {
+                    for (int i = target + 1; i <= normSize[classNumber[target]]; i++) {
                         NormStu[classNumber[target]][i] = NormStu[classNumber[target]][i+1];
                     }
                     //update class size
@@ -751,14 +671,7 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
             cout << "\nWhat would you like to do with them?";
             cout << "\n\t1: Change Grades\n\t2: Remove Student\n\t";
             do {
-                cin >> select;
-                //ensure input is a number
-                while (cin.fail()) {
-                    cout << "\nInvalid input, please try again\n";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cin >> select;
-                }
+                fetchIntegerInput(&select);
                 //error message
                 if (select > 2 || select < 0) {
                     cout << "\nInvalid input, please try again\n";
@@ -775,7 +688,7 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
                     //when class is full
                     Summer23 Empty;
                     //shift everything over. Overwriting the student being removed.
-                    for (int i = target; i <= sumSize[classNumber[target]] - 1; i++) {
+                    for (int i = target + 1; i <= sumSize[classNumber[target]] - 1; i++) {
                         SumStu[classNumber[target]][i] = SumStu[classNumber[target]][i+1];
                     }
                     //But for the last one we set it equal to the default constructor
@@ -784,7 +697,7 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
                     sumSize[classNumber[target]] = sumSize[classNumber[target]] - 1;
                 } else {
                     //when class isn't full
-                    for (int i = target; i <= sumSize[classNumber[target]]; i++) {
+                    for (int i = target + 1; i <= sumSize[classNumber[target]]; i++) {
                         SumStu[classNumber[target]][i] = SumStu[classNumber[target]][i+1];
                     }
                     //update class size
@@ -797,6 +710,8 @@ void finder(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], in
             averageCalc(SumStu[classNumber[target]], sumSize[classNumber[target]]);
         }
 
+    } else {
+        cout << "\nThere where no matches\n";
     }
 }
 
@@ -808,14 +723,7 @@ void removalMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE
     cout << "\n-----Removal Menu-----\n";
     cout << "\n\t0:Remove Normal Student\n\t1:Remove Summer Student\n\t2:Remove Normal Class\n\t3:Remove Summer Class\n";
     do {
-        cin >> select;
-        //ensure input is a number
-        while (cin.fail()) {
-            cout << "\nInvalid input, please try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> select;
-        }
+        fetchIntegerInput(&select);
         //error message
         if (select > 3 || select < 0) {
             cout << "\nInvalid input, please try again\n";
@@ -825,62 +733,69 @@ void removalMenu(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE
     } while (select > 3 || select < 0);
     switch (select) {
         case 0: //Removing COP3014 student
-            //prompt for and receive input
-            cout << "\nwhich section are they in? (please enter the last digit in name)\n";
-            for (int i = 0; i < *NumOfSectionsNorm; i++) {
-                cout << NormStu[i][0].getZNumber();
-                cout << "\n";
+            //Check if an actual class exists
+            if (*NumOfSectionsNorm > 0) {
+                // prompt for and receive input
+                cout << "\nwhich section are they in? (please enter the last digit in name)\n";
+                for (int i = 0; i < *NumOfSectionsNorm; i++) {
+                    cout << NormStu[i][0].getZNumber();
+                    cout << "\n";
+                }
+                do {
+                    fetchIntegerInput(&select);
+                    //error message
+                    if (select > *NumOfSectionsNorm || select < 0) {
+                        cout << "\nInvalid input, please try again\n";
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    }
+                } while (select >= *NumOfSectionsNorm || select < 0);
+                //remove student
+                removeStudents(NormStu[select], &normSize[select]);
+            } else {
+                cout << "\nThere are no classes to remove from\n";
             }
-            do {
-                cin >> select;
-                //ensures the selection is a number
-                while (cin.fail()) {
-                    cout << "\nInvalid Input, please try again\n";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cin >> select;
-                }
-                //error message
-                if (select > *NumOfSectionsNorm || select < 0) {
-                    cout << "\nInvalid input, please try again\n";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
-            } while (select >= *NumOfSectionsNorm || select < 0);
-            //remove student
-            removeStudents(NormStu[select], &normSize[select]);
+
             break;
         case 1: //Removing Summer23 Student
-            //prompt for and receive input
-            cout << "\nwhich section are they in? (please enter the last digit in name)\n";
-            for (int i = 0; i < *NumOfSectionsSum; i++) {
-                cout << SumStu[i][0].getZNumber();
-                cout << "\n";
+            //Check if an actual class exists
+            if (*NumOfSectionsSum > 0) {
+                //prompt for and receive input
+                cout << "\nwhich section are they in? (please enter the last digit in name)\n";
+                for (int i = 0; i < *NumOfSectionsSum; i++) {
+                    cout << SumStu[i][0].getZNumber();
+                    cout << "\n";
+                }
+                do {
+                    fetchIntegerInput(&select);
+                    //error message
+                    if (select > *NumOfSectionsSum || select < 0) {
+                        cout << "\nInvalid input, please try again\n";
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    }
+                } while (select >= *NumOfSectionsSum || select < 0);
+                //remove student
+                removeStudents(SumStu[select], &sumSize[select]);
+            } else {
+                cout << "\nThere are no classes to remove from\n";
             }
-            do {
-                cin >> select;
-                //ensures the selection is a number
-                while (cin.fail()) {
-                    cout << "\nInvalid Input, please try again\n";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cin >> select;
-                }
-                //error message
-                if (select > *NumOfSectionsSum || select < 0) {
-                    cout << "\nInvalid input, please try again\n";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
-            } while (select >= *NumOfSectionsSum || select < 0);
-            //remove student
-            removeStudents(SumStu[select], &sumSize[select]);
             break;
         case 2://Remove COP3014 class
-            removeClass(NormStu, normSize, NumOfSectionsNorm);
+            //Check if an actual class exists
+            if (*NumOfSectionsNorm > 0) {
+                removeClass(NormStu, normSize, NumOfSectionsNorm);
+            } else {
+                cout << "\nThere are no classes to remove\n";
+            }
             break;
         case 3://Remove Summer23 class
-            removeClass(SumStu, sumSize, NumOfSectionsSum);
+            //Check if an actual class exists
+            if (*NumOfSectionsSum > 0) {
+                removeClass(SumStu, sumSize, NumOfSectionsSum);
+            } else {
+                cout << "\nThere are no classes to remove\n";
+            }
             break;
     }
 }
@@ -941,9 +856,7 @@ void averageCalc(Summer23 students[], int NumStudents) {
     students[0].setMidtermGrade(midterm);
     students[0].setFinalGrade(final);
     students[0].setBonus(bonus);
-    students[0].removeBonus();
     students[0].computeTotalGrade();
-    students[0].addBonus();
     students[0].determineLetterGrade();
 }
 
@@ -958,14 +871,7 @@ void removeClass(COP3014 students[][MAXCLASSSIZE], int NumOfStudents[], int *Num
         cout << "\n";
     }
     do {
-        cin >> select;
-        //ensures the selection is a number
-        while (cin.fail()) {
-            cout << "\nInvalid Input, please try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> select;
-        }
+        fetchIntegerInput(&select);
         //error message
         if (select > *NumOfClasses || select < 0) {
             cout << "\nInvalid input, pleas try again\n";
@@ -973,8 +879,10 @@ void removeClass(COP3014 students[][MAXCLASSSIZE], int NumOfStudents[], int *Num
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     } while (select >= *NumOfClasses || select < 0);
+    //seeing if we need to worry about the list being full
     if (*NumOfClasses == MAXCLASSSIZE) {
         //Remove class by shifting over all the other classes to overwrite the one being removed.
+        //using <= to prevent accessing a part of the array that doesn't exist.
         for (int i = select; i <= *NumOfClasses; i++) {
             //moving students over
             for (int j = 0; j < NumOfStudents[i+1]; j++) {
@@ -982,7 +890,7 @@ void removeClass(COP3014 students[][MAXCLASSSIZE], int NumOfStudents[], int *Num
             }
             NumOfStudents[i] = NumOfStudents[i+1];
         }
-        //clears out the old data
+        //clears out the old data at the end of array
         COP3014 Empty;
         for (int i = 0; i < NumOfStudents[*NumOfClasses - 1]; i++) {
             students[*NumOfClasses - 1][i] = Empty;
@@ -1003,6 +911,7 @@ void removeClass(COP3014 students[][MAXCLASSSIZE], int NumOfStudents[], int *Num
 
 //Overload for removing summer classes
 void removeClass(Summer23 students[][MAXCLASSSIZE], int NumOfStudents[], int *NumOfClasses) {
+    //Variable for input receiving
     int select;
     cout << "Which class will you be removing?\n";
     for (int i = 0; i < *NumOfClasses; i++) {
@@ -1010,14 +919,7 @@ void removeClass(Summer23 students[][MAXCLASSSIZE], int NumOfStudents[], int *Nu
         cout << "\n";
     }
     do {
-        cin >> select;
-        //ensures the selection is a number
-        while (cin.fail()) {
-            cout << "\nInvalid Input, please try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> select;
-        }
+        fetchIntegerInput(&select);
         //error message
         if (select > *NumOfClasses || select < 0) {
             cout << "\nInvalid input, pleas try again\n";
@@ -1025,8 +927,10 @@ void removeClass(Summer23 students[][MAXCLASSSIZE], int NumOfStudents[], int *Nu
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     } while (select > *NumOfClasses || select < 0);
+    //seeing if we need to worry about the list being full
     if (*NumOfClasses == MAXCLASSSIZE) {
         //Remove class by shifting over all the other classes to overwrite the one being removed.
+        //using <= to prevent accessing a part of the array that doesn't exist.
         for (int i = select; i <= *NumOfClasses; i++) {
             //moving students over
             for (int j = 0; j < NumOfStudents[i+1]; j++) {
@@ -1034,7 +938,7 @@ void removeClass(Summer23 students[][MAXCLASSSIZE], int NumOfStudents[], int *Nu
             }
             NumOfStudents[i] = NumOfStudents[i+1];
         }
-        //clears out the old data
+        //clears out the old data at the end of array
         Summer23 Empty;
         for (int i = 0; i < NumOfStudents[*NumOfClasses - 1]; i++) {
             students[*NumOfClasses - 1][i] = Empty;
@@ -1055,102 +959,111 @@ void removeClass(Summer23 students[][MAXCLASSSIZE], int NumOfStudents[], int *Nu
 
 //Menus for removing students
 void removeStudents(COP3014 students[], int *NumOfStudents) {
+    //Variable for input receiving
     int select;
-    cout << "Which Student would you like to remove? (please use the number order they are in)\n";
-    viewClass(students, *NumOfStudents + 1);
-    do {
-        cin >> select;
-        //ensures the selection is a number
-        while (cin.fail()) {
-            cout << "\nInvalid Input, please try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> select;
+    //Make sure there are actually students
+    if (*NumOfStudents > 0) {
+        //prompting and receiving input
+        cout << "Which Student would you like to remove? (please use the number order they are in)\n";
+        viewClass(students, *NumOfStudents + 1);
+        do {
+            fetchIntegerInput(&select);
+            //error message
+            if (select > *NumOfStudents || select <= 0) {
+                cout << "\nInvalid input, pleas try again\n";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+        } while (select > *NumOfStudents || select <= 0);
+        if (*NumOfStudents >= MAXCLASSSIZE - 1) {
+            //Shifting all the students down to overwrite the one being removed.
+            //using <= to prevent trying to access a part of the array that doesn't exist.
+            //Empty will be used to clear out the last entry in the array.
+            COP3014 Empty;
+            for (int i = select; i <= *NumOfStudents - 1; i++) {
+                students[i] = students[i+1];
+            }
+            //clearing out last entry
+            students[MAXCLASSSIZE - 1] = Empty;
+            *NumOfStudents = *NumOfStudents - 1;
+        } else {
+            //Shifting all the students down to overwrite the one being removed.
+            for (int i = select; i <= *NumOfStudents; i++) {
+                students[i] = students[i+1];
+            }
+            *NumOfStudents = *NumOfStudents - 1;
         }
-        //error message
-        if (select > *NumOfStudents || select <= 0) {
-            cout << "\nInvalid input, pleas try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    } while (select > *NumOfStudents || select <= 0);
-    if (*NumOfStudents >= MAXCLASSSIZE - 1) {
-        COP3014 Empty;
-        for (int i = select; i <= *NumOfStudents - 1; i++) {
-            students[i] = students[i+1];
-        }
-        students[MAXCLASSSIZE - 1] = Empty;
-        *NumOfStudents = *NumOfStudents - 1;
+        //updating size string and average values
+        students[0].setLastName("\nSize: " + to_string(*NumOfStudents) + "\n");
+        averageCalc(students = students, *NumOfStudents);
     } else {
-        for (int i = select; i <= *NumOfStudents; i++) {
-            students[i] = students[i+1];
-        }
-        *NumOfStudents = *NumOfStudents - 1;
+        cout << "\nThere are no students\n";
     }
-    averageCalc(students = students, *NumOfStudents);
 }
 
 //Menus for removing students
 void removeStudents(Summer23 students[], int *NumOfStudents) {
     int select;
-    cout << "Which Student would you like to remove? (please use the number order they are in)\n";
-    viewClass(students, *NumOfStudents + 1);
-    do {
-        cin >> select;
-        //ensures the selection is a number
-        while (cin.fail()) {
-            cout << "\nInvalid Input, please try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> select;
+    //Make sure there are actually students
+    if (*NumOfStudents > 0) {
+        cout << "Which Student would you like to remove? (please use the number order they are in)\n";
+        viewClass(students, *NumOfStudents + 1);
+        do {
+            fetchIntegerInput(&select);
+            //error message
+            if (select > *NumOfStudents || select <= 0) {
+                cout << "\nInvalid input, pleas try again\n";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+        } while (select > *NumOfStudents || select <= 0);
+        if (*NumOfStudents >= MAXCLASSSIZE - 1) {
+            //Shifting all the students down to overwrite the one being removed.
+            //using <= to prevent trying to access a part of the array that doesn't exist.
+            //Empty will be used to clear out the last entry in the array.
+            Summer23 thing;
+            for (int i = select; i <= *NumOfStudents - 1; i++) {
+                students[i] = students[i+1];
+            }
+            //clearing out last entry
+            students[MAXCLASSSIZE - 1] = thing;
+            *NumOfStudents = *NumOfStudents - 1;
+        } else {
+            //Shifting all the students down to overwrite the one being removed.
+            for (int i = select; i <= *NumOfStudents; i++) {
+                students[i] = students[i+1];
+            }
+            *NumOfStudents = *NumOfStudents - 1;
         }
-        //error message
-        if (select > *NumOfStudents || select <= 0) {
-            cout << "\nInvalid input, pleas try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    } while (select > *NumOfStudents || select <= 0);
-    if (*NumOfStudents >= MAXCLASSSIZE - 1) {
-        Summer23 thing;
-        for (int i = select; i <= *NumOfStudents - 1; i++) {
-            students[i] = students[i+1];
-        }
-        students[MAXCLASSSIZE - 1] = thing;
-        *NumOfStudents = *NumOfStudents - 1;
+        //updating size string and average values
+        students[0].setLastName("\nSize: " + to_string(*NumOfStudents) + "\n");
+        averageCalc(students = students, *NumOfStudents);
     } else {
-        for (int i = select; i <= *NumOfStudents; i++) {
-            students[i] = students[i+1];
-        }
-        *NumOfStudents = *NumOfStudents - 1;
+        cout << "\nThere are no students\n";
     }
-    averageCalc(students = students, *NumOfStudents);
+
 }
 
 //Menus for changing grades
 void editGradesMenu(Summer23* Student) {
+    //variable for receiving input
     int select;
+    //prompt for and receive input
     cout << "\nWhich grades are you changing?";
-    cout << "\n\t1:Quiz1\n\t2:Quiz2\n\t3:Quiz3\n\t4:AllQuiz's\n\t5:Midterm\n\t6:Final\n\t7:Everything";
+    cout << "\n\t1:Quiz1\n\t2:Quiz2\n\t3:Quiz3\n\t4:AllQuiz's\n\t5:Midterm\n\t6:Final\n\t7:Everything\n\t8:Bonus\n";
     do {
-        cin >> select;
-        //ensure input is a number
-        while (cin.fail()) {
-            cout << "\nInvalid input, please try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> select;
-        }
+        fetchIntegerInput(&select);
         //error message
-        if (select > 7 || select < 1) {
+        if (select > 8 || select < 1) {
             cout << "\nInvalid input, please try again\n";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-    } while (select > 7 || select < 1);
+    } while (select > 8 || select < 1);
+    //variable for the new grades
     double NewGrade;
     switch (select) {
-        case 1:
+        case 1: //change quiz 1
             do {
                 cout << "Please enter the grade for quiz #1\n";
                 cin >> NewGrade;
@@ -1170,7 +1083,7 @@ void editGradesMenu(Summer23* Student) {
             } while ((NewGrade > 20) || (NewGrade < 0));
             Student->setQuizGrades(NewGrade, Student->getQuizGrades(2), Student->getQuizGrades(3));
             break;
-        case 4:
+        case 4: //change all 3 quiz's
             double NewGrades[3];
             for (int i = 0; i < 3; i++) {
                 //the do while ensures we get a valid quiz grade between 0 and 20 inclusive
@@ -1194,7 +1107,7 @@ void editGradesMenu(Summer23* Student) {
             }
             Student->setQuizGrades(NewGrades);
             break;
-        case 2:
+        case 2: //Change quiz 2
             do {
                 cout << "Please enter the grade for quiz #2\n";
                 cin >> NewGrade;
@@ -1214,7 +1127,7 @@ void editGradesMenu(Summer23* Student) {
             } while ((NewGrade > 20) || (NewGrade < 0));
             Student->setQuizGrades(Student->getQuizGrades(1), NewGrade, Student->getQuizGrades(3));
             break;
-        case 3:
+        case 3://Change quiz 3
             do {
                 cout << "Please enter the grade for quiz #3\n";
                 cin >> NewGrade;
@@ -1234,7 +1147,7 @@ void editGradesMenu(Summer23* Student) {
             } while ((NewGrade > 20) || (NewGrade < 0));
             Student->setQuizGrades(Student->getQuizGrades(1), Student->getQuizGrades(2), NewGrade);
             break;
-        case 5:
+        case 5://change midterm grade
             cout << "\nPlease enter the midterm grade\n";
             //ensures that num is between 0 and 100 inclusive
             do {
@@ -1256,7 +1169,7 @@ void editGradesMenu(Summer23* Student) {
             //ensures we receive a final grade between 0 and 100 inclusive
             Student->setMidtermGrade(NewGrade);
             break;
-        case 6:
+        case 6://change final grade
             cout << "\nPlease enter the final grade\n";
             do {
                 cin >> NewGrade;
@@ -1277,10 +1190,10 @@ void editGradesMenu(Summer23* Student) {
             //ensures we receive a final grade between 0 and 100 inclusive
             Student->setFinalGrade(NewGrade);
             break;
-        case 7:
+        case 7: //Change all grades
             Student->setAllInput();
             break;
-        case 8:
+        case 8: //Change bonus grade
             cout << "\nPlease enter the new bonus percent (max 3%)\n";
             cin >> NewGrade;
             //do-while ensures we have a bonus between 0 and 3 inclusive
@@ -1304,26 +1217,20 @@ void editGradesMenu(Summer23* Student) {
         default:
             break;
     }
-    Student->removeBonus();
+    //compute and determine new total and letter grade.
     Student->computeTotalGrade();
-    Student->addBonus();
     Student->determineLetterGrade();
 }
 
 //Overload for changing grades of normal students
 void editGradesMenu(COP3014* Student) {
+    //variable for receiving input
     int select;
+    //prompt for input and receive it
     cout << "\nWhich grades are you changing?";
-    cout << "\n\t1:Quiz1\n\t2:Quiz2\n\t3:Quiz3\n\t4:AllQuiz's\n\t5:Midterm\n\t6:Final\n\t7:Everything\n\t8:Bonus";
+    cout << "\n\t1:Quiz1\n\t2:Quiz2\n\t3:Quiz3\n\t4:AllQuiz's\n\t5:Midterm\n\t6:Final\n\t7:Everything\n";
     do {
-        cin >> select;
-        //ensure input is a number
-        while (cin.fail()) {
-            cout << "\nInvalid input, please try again\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> select;
-        }
+        fetchIntegerInput(&select);
         //error message
         if (select > 7 || select < 1) {
             cout << "\nInvalid input, please try again\n";
@@ -1331,9 +1238,10 @@ void editGradesMenu(COP3014* Student) {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     } while (select > 7 || select < 1);
+    //variable for receiving grades
     double NewGrade;
     switch (select) {
-        case 1:
+        case 1: //change quiz 1
             do {
                 cout << "Please enter the grade for quiz #1\n";
                 cin >> NewGrade;
@@ -1353,7 +1261,7 @@ void editGradesMenu(COP3014* Student) {
             } while ((NewGrade > 20) || (NewGrade < 0));
             Student->setQuizGrades(NewGrade, Student->getQuizGrades(2), Student->getQuizGrades(3));
             break;
-        case 4:
+        case 4: //change all quiz's
             double NewGrades[3];
             for (int i = 0; i < 3; i++) {
                 //the do while ensures we get a valid quiz grade between 0 and 20 inclusive
@@ -1377,7 +1285,7 @@ void editGradesMenu(COP3014* Student) {
             }
             Student->setQuizGrades(NewGrades);
             break;
-        case 2:
+        case 2: //Change quiz 2
             do {
                 cout << "Please enter the grade for quiz #2\n";
                 cin >> NewGrade;
@@ -1397,7 +1305,7 @@ void editGradesMenu(COP3014* Student) {
             } while ((NewGrade > 20) || (NewGrade < 0));
             Student->setQuizGrades(Student->getQuizGrades(1), NewGrade, Student->getQuizGrades(3));
             break;
-        case 3:
+        case 3: //Change quiz 3
             do {
                 cout << "Please enter the grade for quiz #3\n";
                 cin >> NewGrade;
@@ -1417,7 +1325,7 @@ void editGradesMenu(COP3014* Student) {
             } while ((NewGrade > 20) || (NewGrade < 0));
             Student->setQuizGrades(Student->getQuizGrades(1), Student->getQuizGrades(2), NewGrade);
             break;
-        case 5:
+        case 5: //Change midterm grade
             cout << "\nPlease enter the midterm grade\n";
             //ensures that num is between 0 and 100 inclusive
             do {
@@ -1439,7 +1347,8 @@ void editGradesMenu(COP3014* Student) {
             //ensures we receive a final grade between 0 and 100 inclusive
             Student->setMidtermGrade(NewGrade);
             break;
-        case 6:
+        case 6: //change final grade
+            cout << "\nPlease enter their final grade\n";
             do {
                 cin >> NewGrade;
                 //ensures we actually get a number
@@ -1465,16 +1374,19 @@ void editGradesMenu(COP3014* Student) {
         default:
             break;
     }
+    //update total and letter grade
     Student->computeTotalGrade();
     Student->determineLetterGrade();
 }
 
-//Updates Class Averages
-void AverageUpdater(Summer23 SumStu[][MAXCLASSSIZE], COP3014 NormStu[][MAXCLASSSIZE], int* NumOfSectionsSum, int* NumOfSectionsNorm, int sumSize[], int normSize[]) {
-    for (int i = 0; i <= *NumOfSectionsNorm; i++) {
-        averageCalc(NormStu[i], normSize[i]);
-    }
-    for (int i = 0; i <= *NumOfSectionsSum; i++) {
-        averageCalc(SumStu[i], sumSize[i]);
+//Fetches a integer form the user
+void fetchIntegerInput(int *StoringLocation) {
+    cin >> *StoringLocation;
+    //ensure input is a number
+    while (cin.fail()) {
+        cout << "\nInvalid input, please try again\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> *StoringLocation;
     }
 }

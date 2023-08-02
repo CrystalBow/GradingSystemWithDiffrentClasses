@@ -44,8 +44,7 @@ void Summer23::setAllInput() {
         }
     } while ((bonus < 0) || (bonus > 3));
     //calculate and redetermine grade with bonus
-    COP3014::computeTotalGrade();
-    addBonus();
+    computeTotalGrade();
     determineLetterGrade();
 }
 
@@ -99,4 +98,11 @@ void Summer23::removeBonus() {
 void Summer23::setTotalGrade(double totalGrade) {
     COP3014::setTotalGrade(totalGrade);
     isBonusON = false;
+}
+
+//calculates total grade with bonus
+void Summer23::computeTotalGrade() {
+    removeBonus();
+    COP3014::computeTotalGrade();
+    addBonus();
 }

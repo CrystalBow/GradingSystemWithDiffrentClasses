@@ -42,6 +42,9 @@ namespace studentTypesYimerDuggan {
         //removes the bonus if it is on
         void removeBonus();
 
+        //calculates total grade with bonus
+        void computeTotalGrade();
+
     private:
         double bonus;
         //So I noticed in the instructions that the display on totalGrade doesn't include the bonus, but it is added and used for the final calculation.
